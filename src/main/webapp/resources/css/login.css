@@ -1,0 +1,16 @@
+
+body{
+			background-image:url(/copar/imagens/fundo.jpg);
+			font: 12px Arial,Helvetica,sans-serif;
+		    margin: 0;
+   		
+        }
+        
+
+        
+#divlogin {
+	position:absolute;
+	class: span6;
+	align: center;
+	padding:20px;
+}

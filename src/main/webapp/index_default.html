@@ -1,0 +1,22 @@
+
+<div class="container">
+
+	<!--TABELA DE ARQUIVOS -->
+	<div class="card border border-info rounded">
+		<div class="card-header">
+			<h4>#Arquivos</h4>
+		</div>
+		<div class="card-body">
+			<div class="form-group row">
+				<label for="Contato" class="col-sm-2 col-form-label">Carregar Arquivo</label>
+				<div class="col-sm-6">
+					 <input type="file" file-model="file" name="file" id="file"/>
+					 <input type="image" src="imagem/cloud-upload-4x.png" title="Carregar Arquivo" ng-click="executaruoloadfile()"/>
+				</div>
+
+			</div>
+			<div ng-include="'tb_arquivos.html'"></div>
+		</div>
+	</div>
+
+</div>

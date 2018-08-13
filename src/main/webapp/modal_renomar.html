@@ -1,0 +1,49 @@
+
+
+<!-- Modal -->
+<div class="modal fade" id="renameModal" tabindex="-1" role="dialog" aria-labelledby="renameModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="renameModalLabel">Renomar Arquivo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      
+
+      	<form name="renomarform" class="my-form" >
+		  
+		  <!--Arquivo -->
+		  <div class="form-group row">
+		    <label for="Contato" class="col-sm-2 col-form-label">Arquivo</label>
+		    <div class="col-sm-6">
+		      <label for="Contato" class="col-sm-2 col-form-label">{{dados.KeyFile.originName}}</label>
+		    </div>
+		   
+		  </div>
+		
+		  <!--Renomear-->
+		  <div class="form-group row">
+		    <label for="Entrega" class="col-sm-2 col-form-label">Renomear Para</label>
+		    <div class="col-sm-6">
+		      <input name="fielrenomear" class="form-control" placeholder="Novo Nome Arquivo..." ng-model="dados.KeyFile.targetName" required>
+		    </div>
+		    <div class="alert alert-warning col-sm-3" role="alert" ng-show="renomarform.fielrenomear.$invalid && renomarform.fielrenomear.$dirty">
+		      <input type="image" src="imagem/warning-2x.png">
+		      Campo Renomar Obrigatorio!
+		    </div>
+		  </div>
+		  
+		  <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" ng-click="executarrenomeararquivo()" data-dismiss="modal" ng-show="renomarform.$valid">GO</button>
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+		</form>
+
+      </div>
+    </div>
+  </div>
+</div>
+

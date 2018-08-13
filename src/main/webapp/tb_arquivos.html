@@ -1,0 +1,34 @@
+<div class="alert alert-warning" role="alert" ng-show="apresentarMsgNaoHaArquivos()">
+  Nao Ha Arquivos.
+</div>
+
+<div class="alert alert-danger" role="alert" ng-show="apresentarMsgErroCarregarArquivos()">
+  Erro ao Carregar Arquivos.
+</div>
+
+<div class="table-responsive" style="height:300px; overflow-y:scroll;">
+  <table class="table table-striped table-bordered" ng-show="apresentarTabela()" > 
+    <thead class="thead-dark">
+      <tr>
+        <th>Arquivo</th>
+        <th>Data Ultima Modificacao</th>
+        <th>Tamanho</th>
+        <th>Acao</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="arq in dados.arquivos">
+        <td>{{arq.nome}}</td>
+        <td>{{arq.ultimaModificacao}}</td>
+        <td>{{arq.tamanhoKB}}</td>
+        <td>
+        	<input type="image" src="imagem/pencil-3x.png" title="Renomear Arquivo" data-toggle="modal" data-target="#renameModal" ng-click="selecionarArquivo(arq.nome)"/>
+            
+<!--             <input type="image" src="imagem/thumb-up-2x.png" title="Pedido Entregue" ng-show="pedido.pronto" ng-click="pedidoentregue(pedido)"/> -->
+<!--             <input type="image" src="imagem/circle-x-2x.png" title="Cancelar Pedido" ng-click="pedidocancelado(pedido)"/> -->
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
