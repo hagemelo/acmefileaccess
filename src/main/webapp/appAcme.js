@@ -69,28 +69,16 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 
 	};
 	
-	$scope.renomeararquivo = function(){
-
-		return !dados.arquivosCarregados && dados.errobackendcarregararquivos;
-	};
+	$scope.renomeararquivo = () => !dados.arquivosCarregados && dados.errobackendcarregararquivos;
 	
 	
-	$scope.apresentarMsgNaoHaArquivos = function(){
-
-		return !dados.arquivosCarregados && dados.errobackendcarregararquivos;
-	};
+	$scope.apresentarMsgNaoHaArquivos = () =>!dados.arquivosCarregados && dados.errobackendcarregararquivos;
 	
-	$scope.apresentarMsgErroCarregarArquivos = function(){
-
-		return dados.errobackendcarregararquivos;
-	};
+	$scope.apresentarMsgErroCarregarArquivos = () => dados.errobackendcarregararquivos;
 	
-	$scope.apresentarTabela = function(){
-
-		return dados.arquivosCarregados && !dados.errobackendcarregararquivos;
-	};
+	$scope.apresentarTabela = () => dados.arquivosCarregados && !dados.errobackendcarregararquivos;
 	
-	$scope.selecionarArquivo = function(arquivo){
+	$scope.selecionarArquivo = (arquivo) =>{
 
 		$scope.dados.KeyFile.originName = arquivo
 	};

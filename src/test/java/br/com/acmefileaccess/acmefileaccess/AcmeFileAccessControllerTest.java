@@ -27,7 +27,7 @@ import br.com.acmefileaccess.acmefileaccess.helper.Helper;
  *
  */
 
- @Ignore
+@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
 public class AcmeFileAccessControllerTest {
@@ -58,7 +58,7 @@ public class AcmeFileAccessControllerTest {
 		MultipartFile multipartFile = null;
 		try {
 			input = new FileInputStream(file);
-			multipartFile = new MockMultipartFile(file.getName(), file.getName(), "text/plain", input);
+			multipartFile = new MockMultipartFile(file.getName(), file.getName(), "undefined", input);
 
 		} catch (IOException e) {
 			e.printStackTrace();
