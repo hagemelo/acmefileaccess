@@ -1,7 +1,5 @@
 package br.com.acmefileaccess.acmefileaccess;
 
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -13,15 +11,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  */
 
 @SpringBootApplication
-public class AcmeFileAccessApplication implements ApplicationRunner {
-
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
-			
-		System.in.read();
-	}
+public class AcmeFileAccessApplication  {
 
 	public static void main(String[] args) {
+		
 		SpringApplication.run(AcmeFileAccessApplication.class, args);
 	}
 

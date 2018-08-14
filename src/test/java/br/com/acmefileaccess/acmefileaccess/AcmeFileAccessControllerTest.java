@@ -2,23 +2,20 @@ package br.com.acmefileaccess.acmefileaccess;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-
-import org.junit.Ignore;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import br.com.acmefileaccess.acmefileaccess.helper.Helper;
+import br.com.acmefileaccess.acmefileaccess.modelo.Response;
 
 /**
  * 
@@ -28,8 +25,8 @@ import br.com.acmefileaccess.acmefileaccess.helper.Helper;
  */
 
 @Ignore
-@RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment=WebEnvironment.RANDOM_PORT)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringBootTest(classes=AcmeFileAccessApplication.class, webEnvironment=SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AcmeFileAccessControllerTest {
 
 	@Autowired
@@ -53,19 +50,13 @@ public class AcmeFileAccessControllerTest {
 	@Test
 	public void deveExistirMetodoPostDeUploadArquivo() {
 
-		File file = new File("C:\\temp\\ReuniaoComOAdriano.txt");
-		FileInputStream input;
-		MultipartFile multipartFile = null;
-		try {
-			input = new FileInputStream(file);
-			multipartFile = new MockMultipartFile(file.getName(), file.getName(), "undefined", input);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
+		
+		ClassPathResource resource = new ClassPathResource("default-soapui-workspace.xml", getClass());
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+		map.add("file", resource);
+		
 		String url = "/uploadarquivo";
-		ResponseEntity<String> response = testRestTemplate.postForEntity(url, multipartFile, String.class);
+		ResponseEntity<Response> response = testRestTemplate.postForEntity(url, map, Response.class);
 		assertTrue(response.getStatusCodeValue() == RESPONSE_CODE);
 	}
 

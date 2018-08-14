@@ -2,6 +2,7 @@ package br.com.acmefileaccess.acmefileaccess.controller;
 
 import java.util.Set;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ import br.com.acmefileaccess.acmefileaccess.service.AWSService;
  * @since 11/08/2018
  *
  */
+
 @CrossOrigin(origins = {"http://localhost:8081"}, maxAge = 3000)
 @RestController
 public class AcmeFileAccessController extends DefaultController{
@@ -39,7 +41,6 @@ public class AcmeFileAccessController extends DefaultController{
 		Set<Arquivo> result =service.list();  
 		return new ResponseEntity<Set<Arquivo>>(result, HttpStatus.OK);
 	}
-	
 
 	@PostMapping(path= "/uploadarquivo")
 	public @ResponseBody ResponseEntity<Response> upload(@RequestPart(value = "file") MultipartFile file) throws AcmeFileAccessException{

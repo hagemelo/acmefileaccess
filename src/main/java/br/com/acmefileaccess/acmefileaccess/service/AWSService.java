@@ -1,9 +1,7 @@
 package br.com.acmefileaccess.acmefileaccess.service;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,127 +36,117 @@ import br.com.acmefileaccess.acmefileaccess.modelo.Response;
 
 @Service
 public class AWSService {
-	
-	private Logger logger = LogManager.getLogger(AWSService.class); 
-	
+
+	private Logger logger = LogManager.getLogger(AWSService.class);
+
 	static final String ARQUIVO_TEXT = "Arquivo '";
-	
+
 	@Autowired
 	private AmazonS3 s3client;
- 
+
 	@Value("${jsa.s3.bucket}")
 	private String bucketName;
-	
+
 	@Autowired
 	private Helper helper;
-	
+
 	private Set<Arquivo> listaArquivos;
-	
+
 	public AWSService() {
-		
+
 		this.listaArquivos = new HashSet<>();
 	}
-	
-	public Response uploadFile(MultipartFile multipartfile) throws AcmeFileAccessException{
-		
+
+	public Response uploadFile(MultipartFile multipartfile) throws AcmeFileAccessException {
+
 		try {
-			
+
 			File file = helper.convertMultiPartToFile(multipartfile);
-	        s3client.putObject(new PutObjectRequest(bucketName, file.getName(), file));
-	        logger.info("===================== Upload File - Done! =====================");
-	        StringBuilder result = new StringBuilder(ARQUIVO_TEXT)
-					.append(file.getName())
+			s3client.putObject(new PutObjectRequest(bucketName, file.getName(), file));
+			logger.info("===================== Upload File - Done! =====================");
+			StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(file.getName())
 					.append("' carregado com SUCESSO!");
-	        return new Response(result.toString(), HttpStatus.OK); 
+			return new Response(result.toString(), HttpStatus.OK);
 		} catch (AmazonServiceException ase) {
 
-			throw new AcmeFileAccessException("Caught an AmazonServiceException from PUT requests, rejected reasons ", ase);
-        } catch (AmazonClientException ace) {
+			throw new AcmeFileAccessException("Caught an AmazonServiceException from PUT requests, rejected reasons ",
+					ase);
+		} catch (AmazonClientException ace) {
 
-        	throw new AcmeFileAccessException("Caught an AmazonClientException: ", ace);
-        }
+			throw new AcmeFileAccessException("Caught an AmazonClientException: ", ace);
+		}
 	}
-	
+
 	public Set<Arquivo> list() throws AcmeFileAccessException {
 
 		try {
-			
-			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
-					.withBucketName(bucketName)
-					.withMaxKeys(10);
-			
+
+			ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucketName);
+
 			ObjectListing objectListing;
 			objectListing = s3client.listObjects(listObjectsRequest);
 			convert(objectListing);
 			return this.listaArquivos;
 		} catch (AmazonServiceException ase) {
-			
+
 			throw new AcmeFileAccessException("Erro ao Listar Aquivos", ase);
 		} catch (AmazonClientException ace) {
-			
+
 			throw new AcmeFileAccessException("Erro ao Listar Aquivos", ace);
 		}
 	}
-	
-	
-	public Response rename(KeyFile keyFile) throws AcmeFileAccessException{
-		
+
+	public Response rename(KeyFile keyFile) throws AcmeFileAccessException {
+
 		this.copyFile(keyFile);
 		this.delete(keyFile.getOriginName());
-		
-		StringBuilder result = new StringBuilder(ARQUIVO_TEXT)
-					.append(keyFile.getOriginName())
-					.append("' renomeado para '")
-					.append(keyFile.getTargetName())
-					.append("' com SUCESSO!");
-		return new Response(result.toString(), HttpStatus.OK); 
+
+		StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(keyFile.getOriginName())
+				.append("' renomeado para '").append(keyFile.getTargetName()).append("' com SUCESSO!");
+		return new Response(result.toString(), HttpStatus.OK);
 	}
-	
-	public Response delete(String fileName) throws AcmeFileAccessException{
-		
+
+	public Response delete(String fileName) throws AcmeFileAccessException {
+
 		try {
 			s3client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
-	        logger.info("===================== delete File - Done! =====================");
-	        
-			StringBuilder result = new StringBuilder(ARQUIVO_TEXT)
-					.append(fileName)
-					.append("' deletado com SUCESSO!");
+			logger.info("===================== delete File - Done! =====================");
+
+			StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(fileName).append("' deletado com SUCESSO!");
 			return new Response(result.toString(), HttpStatus.OK);
 		} catch (AmazonServiceException ase) {
-			
+
 			throw new AcmeFileAccessException("Erro ao deletar arquivo ", ase);
-        } catch (AmazonClientException ace) {
-        	
-            throw new AcmeFileAccessException("Erro ao Deletar arquivo", ace);
-        }
+		} catch (AmazonClientException ace) {
+
+			throw new AcmeFileAccessException("Erro ao Deletar arquivo", ace);
+		}
 	}
-		
-	public Response copyFile(KeyFile keyFile) throws AcmeFileAccessException{
-		
+
+	public Response copyFile(KeyFile keyFile) throws AcmeFileAccessException {
+
 		try {
-			CopyObjectRequest copyObjRequest = new CopyObjectRequest(bucketName, 
-					keyFile.getOriginName(), bucketName, keyFile.getTargetName());
+			CopyObjectRequest copyObjRequest = new CopyObjectRequest(bucketName, keyFile.getOriginName(), bucketName,
+					keyFile.getTargetName());
 			s3client.copyObject(copyObjRequest);
-	        logger.info("===================== copy File - Done! =====================");
-	        StringBuilder result = new StringBuilder(ARQUIVO_TEXT)
-					.append(keyFile.getOriginName())
-					.append("' copiado para '")
-					.append(keyFile.getTargetName())
-					.append("' com SUCESSO!");
-	        return new Response(result.toString(), HttpStatus.OK); 
+			logger.info("===================== copy File - Done! =====================");
+			StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(keyFile.getOriginName())
+					.append("' copiado para '").append(keyFile.getTargetName()).append("' com SUCESSO!");
+			return new Response(result.toString(), HttpStatus.OK);
 		} catch (AmazonServiceException ase) {
 
 			throw new AcmeFileAccessException("Erro ao Copiar arquivo ", ase);
-        } catch (AmazonClientException ace) {
+		} catch (AmazonClientException ace) {
 
-        	throw new AcmeFileAccessException("Erro ao Copiar arquivo", ace);
-        }
+			throw new AcmeFileAccessException("Erro ao Copiar arquivo", ace);
+		}
 	}
-	
-	private void convert(ObjectListing  listObjects) {
-		
+
+	private void convert(ObjectListing listObjects) {
+
 		this.listaArquivos.clear();
-		listObjects.getObjectSummaries().stream().forEach(obj -> this.listaArquivos.add(new Arquivo(obj.getKey(), obj.getSize(), obj.getLastModified())));
+		listObjects.getObjectSummaries().stream().forEach(
+				obj -> this.listaArquivos.add(new Arquivo(obj.getKey(), obj.getSize(), obj.getLastModified())));
 	}
 
 }

@@ -11,13 +11,22 @@
 				    <span  >&times;</span>
 				  </button>
    			</div>
+   			
+   			<div class="alert alert-danger" role="alert" ng-show="apresentarMsgErro()">
+			  {{dados.mensagemrespostadeacao}}
+			</div>
 		</div>
 		<div class="card-body">
 			<div class="form-group row">
 				<label for="Contato" class="col-sm-2 col-form-label">Carregar Arquivo</label>
 				<div class="col-sm-6">
-					 <input type="file" file-model="file" name="file" id="file"/>
-					 <input type="image" src="imagem/cloud-upload-4x.png" title="Carregar Arquivo" ng-click="executaruoloadfile()"/>
+					<form name="uploadform" class="my-form" >
+						<input type="file" file-model="file" name="file" id="file" required/>
+					 
+					 	<button type="button" class="btn btn-primary" ng-click="executaruoloadfile()" ng-show="uploadform.$valid">GO</button>
+					
+					</form>
+					 
 				</div>
 
 			</div>

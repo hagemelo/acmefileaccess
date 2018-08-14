@@ -6,9 +6,12 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 	
 	const dados = {
 	  	arquivos :[],
+	  	curPage : 0,
+	  	pageSize : 10,
 	  	arquivosCarregados : false,
 	  	statusRetorno : "",
 	  	errobackendcarregararquivos : false,
+	  	apresentarErro : false,
 	  	showrespostadeacao: false,
 		mensagemrespostadeacao: "",
 	  	KeyFile : {
@@ -43,14 +46,25 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 	carregarArquivios();
 	
 	
+
+	
+	
 	$scope.executarrenomeararquivo = function(){
 	
-		$http.post("http://localhost:8081/renamearquivo", dados.KeyFile).then(function (response) {
+		$http.post("http://localhost:8081/renamearquivo", dados.KeyFile)
+		.then(function (response) {
 				
-			$scope.dados.mensagemrespostadeacao = "Arquivo '"+dados.KeyFile.originName+"' renomeado para '"+dados.KeyFile.targetName+"' com Sucesso!";
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.showrespostadeacao = true;
 			carregarArquivios();
-		});
+		}, function myError(response) {
+			
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+			$scope.dados.apresentarErro = true;
+		}
+		
+		
+		);
 
 	};
 	
@@ -64,8 +78,10 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
             headers: {'Content-Type': undefined}
         }).then(function (response) {
 				
-			$scope.dados.mensagemrespostadeacao = "Arquivo '" + dados.KeyFile.originName +"' renomeado para '"+dados.KeyFile.targetName+"' com Sucesso!";
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.showrespostadeacao = true;
+			
+			
 			carregarArquivios();
 			
 		});
@@ -83,6 +99,10 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 	
 	$scope.fecharMsgRespostaAcao= () => $scope.dados.showrespostadeacao = false;
 	
+	$scope.apresentarMsgErro = () => $scope.dados.apresentarErro;
+	
+	$scope.numberOfPages =() => Math.ceil($scope.dados.arquivos.length / $scope.dados.pageSize)
+	
 	$scope.selecionarArquivo = (arquivo) =>{
 
 		$scope.dados.KeyFile.originName = arquivo
@@ -90,6 +110,16 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 
 	
 });
+
+
+angular.module("appAcme").filter("pagination", function()
+		{
+		 return function(input, start)
+		 {
+		  start = +start;
+		  return input.slice(start);
+		 };
+		});
 
 
 
