@@ -3,6 +3,8 @@ package br.com.acmefileaccess.acmefileaccess.controller;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,23 +34,25 @@ public class AcmeFileAccessController extends DefaultController{
 	private AWSService service;
 	
 	@GetMapping(path= "/listdiretorios")
-	public @ResponseBody Set<Arquivo> listFiles() throws AcmeFileAccessException {
+	public @ResponseBody ResponseEntity<Set<Arquivo>> listFiles() throws AcmeFileAccessException {
 
-		return service.list();
+		Set<Arquivo> result =service.list();  
+		return new ResponseEntity<Set<Arquivo>>(result, HttpStatus.OK);
 	}
 	
 
 	@PostMapping(path= "/uploadarquivo")
-	public @ResponseBody Response upload(@RequestPart(value = "file") MultipartFile file) throws AcmeFileAccessException{
+	public @ResponseBody ResponseEntity<Response> upload(@RequestPart(value = "file") MultipartFile file) throws AcmeFileAccessException{
 
-		return service.uploadFile(file);
+		Response result = service.uploadFile(file); 
+		return new ResponseEntity<Response>(result, result.getStatus());
 	}
 	
 	@PostMapping(path= "/renamearquivo")
-	public @ResponseBody String rename(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
+	public @ResponseBody ResponseEntity<Response> rename(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
 		
-		service.rename(keyFile);
-		return "";
+		Response result = service.rename(keyFile);
+		return new ResponseEntity<Response>(result, result.getStatus());
 	}
 	
 	
