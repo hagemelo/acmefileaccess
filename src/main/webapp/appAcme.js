@@ -9,6 +9,8 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 	  	arquivosCarregados : false,
 	  	statusRetorno : "",
 	  	errobackendcarregararquivos : false,
+	  	showrespostadeacao: false,
+		mensagemrespostadeacao: "",
 	  	KeyFile : {
 	  		originName : "",
 	  		targetName : ""
@@ -16,16 +18,16 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 		file :[]
 	};
 
-	
+	$scope.dados = dados;
 	
 	var carregarArquivios = function(){
 		$http.get("http://localhost:8081/listdiretorios")
 		.then(function (response) {
 			
-			dados.arquivos = [];
-			dados.arquivos = response.data;
-			dados.arquivosCarregados = true;
-			$scope.dados = dados;
+			
+			$scope.dados.arquivos = response.data;
+			$scope.dados.arquivosCarregados = true;
+			
 		}, function myError(response) {
 
 			var status = response.status;
@@ -45,9 +47,9 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 	
 		$http.post("http://localhost:8081/renamearquivo", dados.KeyFile).then(function (response) {
 				
-			var mensagem = "Arquivo '" + KeyFile.originName + "' renomeado para '" +  KeyFile.targetName + " com Sucesso!";
+			$scope.dados.mensagemrespostadeacao = "Arquivo '"+dados.KeyFile.originName+"' renomeado para '"+dados.KeyFile.targetName+"' com Sucesso!";
+			$scope.dados.showrespostadeacao = true;
 			carregarArquivios();
-			
 		});
 
 	};
@@ -62,21 +64,24 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
             headers: {'Content-Type': undefined}
         }).then(function (response) {
 				
-			var mensagem = "Arquivo '" + KeyFile.originName + "' renomeado para '" +  KeyFile.targetName + " com Sucesso!";
+			$scope.dados.mensagemrespostadeacao = "Arquivo '" + dados.KeyFile.originName +"' renomeado para '"+dados.KeyFile.targetName+"' com Sucesso!";
+			$scope.dados.showrespostadeacao = true;
 			carregarArquivios();
 			
 		});
 
 	};
 	
-	$scope.renomeararquivo = () => !dados.arquivosCarregados && dados.errobackendcarregararquivos;
+	$scope.renomeararquivo = () => !$scope.dados.arquivosCarregados && $scope.dados.errobackendcarregararquivos;
 	
 	
-	$scope.apresentarMsgNaoHaArquivos = () =>!dados.arquivosCarregados && dados.errobackendcarregararquivos;
+	$scope.apresentarMsgNaoHaArquivos = () =>!$scope.dados.arquivosCarregados && $scope.dados.errobackendcarregararquivos;
 	
-	$scope.apresentarMsgErroCarregarArquivos = () => dados.errobackendcarregararquivos;
+	$scope.apresentarMsgErroCarregarArquivos = () => $scope.dados.errobackendcarregararquivos;
 	
-	$scope.apresentarTabela = () => dados.arquivosCarregados && !dados.errobackendcarregararquivos;
+	$scope.apresentarTabela = () => dados.arquivosCarregados && !$scope.dados.errobackendcarregararquivos;
+	
+	$scope.fecharMsgRespostaAcao= () => $scope.dados.showrespostadeacao = false;
 	
 	$scope.selecionarArquivo = (arquivo) =>{
 

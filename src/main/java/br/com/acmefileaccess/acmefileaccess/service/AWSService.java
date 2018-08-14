@@ -83,7 +83,10 @@ public class AWSService {
 
 		try {
 			
-			ListObjectsRequest listObjectsRequest = new ListObjectsRequest().withBucketName(bucketName).withMaxKeys(10);
+			ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
+					.withBucketName(bucketName)
+					.withMaxKeys(10);
+			
 			ObjectListing objectListing;
 			objectListing = s3client.listObjects(listObjectsRequest);
 			convert(objectListing);

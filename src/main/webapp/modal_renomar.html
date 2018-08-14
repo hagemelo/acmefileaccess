@@ -17,8 +17,8 @@
 		  
 		  <!--Arquivo -->
 		  <div class="form-group row">
-		    <label for="Contato" class="col-sm-2 col-form-label">Arquivo</label>
-		    <div class="col-sm-6">
+		    <label for="Contato" class="col-sm-4 col-form-label">Arquivo</label>
+		    <div class="col-sm-5">
 		      <label for="Contato" class="col-sm-2 col-form-label">{{dados.KeyFile.originName}}</label>
 		    </div>
 		   
@@ -26,13 +26,18 @@
 		
 		  <!--Renomear-->
 		  <div class="form-group row">
-		    <label for="Entrega" class="col-sm-2 col-form-label">Renomear Para</label>
-		    <div class="col-sm-6">
+		    <label for="Entrega" class="col-sm-4 col-form-label">Renomear Para</label>
+		    <div class="col-sm-7">
 		      <input name="fielrenomear" class="form-control" placeholder="Novo Nome Arquivo..." ng-model="dados.KeyFile.targetName" required>
 		    </div>
-		    <div class="alert alert-warning col-sm-3" role="alert" ng-show="renomarform.fielrenomear.$invalid && renomarform.fielrenomear.$dirty">
-		      <input type="image" src="imagem/warning-2x.png">
-		      Campo Renomar Obrigatorio!
+		  </div>
+		  
+		  <div class="form-group row">
+		    <div class="col-sm-5">
+			    <div class="alert alert-warning col-sm-3" role="alert" ng-show="renomarform.fielrenomear.$invalid && renomarform.fielrenomear.$dirty">
+			      <input type="image" src="imagem/warning-2x.png">
+			      Campo Renomar Obrigatorio!
+			    </div>
 		    </div>
 		  </div>
 		  
