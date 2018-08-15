@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,5 +57,18 @@ public class AcmeFileAccessController extends DefaultController{
 		return new ResponseEntity<Response>(result, result.getStatus());
 	}
 	
+	@PostMapping(path= "/duplicararquivo")
+	public @ResponseBody ResponseEntity<Response> duplicararquivo(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
+		
+		Response result = service.copyFile(keyFile);
+		return new ResponseEntity<Response>(result, result.getStatus());
+	}
+	
+	@DeleteMapping(path= "/deletararquivo")
+	public @ResponseBody ResponseEntity<Response> delete(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
+		
+		Response result = service.delete(keyFile.getOriginName());
+		return new ResponseEntity<Response>(result, result.getStatus());
+	}
 	
 }

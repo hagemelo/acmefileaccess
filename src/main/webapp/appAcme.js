@@ -45,10 +45,6 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 
 	carregarArquivios();
 	
-	
-
-	
-	
 	$scope.executarrenomeararquivo = function(){
 	
 		$http.post("http://localhost:8081/renamearquivo", dados.KeyFile)
@@ -68,6 +64,42 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 
 	};
 	
+	$scope.executarduplicararquivo = function(){
+		
+		$http.post("http://localhost:8081/duplicararquivo", dados.KeyFile)
+		.then(function (response) {
+				
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+			$scope.dados.showrespostadeacao = true;
+			carregarArquivios();
+		}, function myError(response) {
+			
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+			$scope.dados.apresentarErro = true;
+		}
+		
+		
+		);
+
+	};
+	
+	$scope.executardeletararquivo = function(){
+		
+		$http.delete("http://localhost:8081/deletararquivo", dados.KeyFile)
+		.then(function (response) {
+				
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+			$scope.dados.showrespostadeacao = true;
+			carregarArquivios();
+		}, function myError(response) {
+			
+			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+			$scope.dados.apresentarErro = true;
+		}
+		);
+
+	};
+	
 	$scope.executaruoloadfile = function(){
 		
 		var formData = new FormData();
@@ -80,8 +112,6 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 				
 			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.showrespostadeacao = true;
-			
-			
 			carregarArquivios();
 			
 		});
