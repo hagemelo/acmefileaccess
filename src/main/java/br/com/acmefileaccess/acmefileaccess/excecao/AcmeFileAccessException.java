@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import com.amazonaws.AmazonClientException;
 import com.amazonaws.AmazonServiceException;
 
+import br.com.acmefileaccess.acmefileaccess.modelo.Response;
+
 /**
  * 
  * @author Alexsander Melo
@@ -66,9 +68,9 @@ public class AcmeFileAccessException extends Exception {
 				DEFAULT + " " + cause.getMessage());
 	}
 
-	public ResponseEntity<RespostaErro> respostaErro(){
+	public ResponseEntity<Response> respostaErro(){
 		
-		return new ResponseEntity<RespostaErro>(new RespostaErro(this.getMessage()),  HttpStatus.UNPROCESSABLE_ENTITY);
+		return new ResponseEntity<Response>(new Response(this.getMessage()),  HttpStatus.UNPROCESSABLE_ENTITY);
 	}
 	
 	

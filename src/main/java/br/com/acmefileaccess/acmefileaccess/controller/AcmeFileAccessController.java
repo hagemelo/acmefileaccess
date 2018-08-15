@@ -47,28 +47,28 @@ public class AcmeFileAccessController extends DefaultController{
 	public @ResponseBody ResponseEntity<Response> upload(@RequestPart(value = "file") MultipartFile file) throws AcmeFileAccessException{
 
 		Response result = service.uploadFile(file); 
-		return new ResponseEntity<Response>(result, result.getStatus());
+		return new ResponseEntity<Response>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(path= "/renamearquivo")
 	public @ResponseBody ResponseEntity<Response> rename(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
 		
 		Response result = service.rename(keyFile);
-		return new ResponseEntity<Response>(result, result.getStatus());
+		return new ResponseEntity<Response>(result, HttpStatus.OK);
 	}
 	
 	@PostMapping(path= "/duplicararquivo")
 	public @ResponseBody ResponseEntity<Response> duplicararquivo(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
 		
 		Response result = service.copyFile(keyFile);
-		return new ResponseEntity<Response>(result, result.getStatus());
+		return new ResponseEntity<Response>(result, HttpStatus.OK);
 	}
 	
 	@DeleteMapping(path= "/deletararquivo")
 	public @ResponseBody ResponseEntity<Response> delete(@RequestBody KeyFile keyFile) throws AcmeFileAccessException {
 		
 		Response result = service.delete(keyFile.getOriginName());
-		return new ResponseEntity<Response>(result, result.getStatus());
+		return new ResponseEntity<Response>(result, HttpStatus.OK);
 	}
 	
 }

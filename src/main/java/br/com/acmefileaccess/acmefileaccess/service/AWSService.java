@@ -8,7 +8,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -66,7 +65,7 @@ public class AWSService {
 			logger.info("===================== Upload File - Done! =====================");
 			StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(file.getName())
 					.append("' carregado com SUCESSO!");
-			return new Response(result.toString(), HttpStatus.OK);
+			return new Response(result.toString());
 		} catch (AmazonServiceException ase) {
 
 			throw new AcmeFileAccessException("Caught an AmazonServiceException from PUT requests, rejected reasons ",
@@ -103,7 +102,7 @@ public class AWSService {
 
 		StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(keyFile.getOriginName())
 				.append("' renomeado para '").append(keyFile.getTargetName()).append("' com SUCESSO!");
-		return new Response(result.toString(), HttpStatus.OK);
+		return new Response(result.toString());
 	}
 
 	public Response delete(String fileName) throws AcmeFileAccessException {
@@ -113,7 +112,7 @@ public class AWSService {
 			logger.info("===================== delete File - Done! =====================");
 
 			StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(fileName).append("' deletado com SUCESSO!");
-			return new Response(result.toString(), HttpStatus.OK);
+			return new Response(result.toString());
 		} catch (AmazonServiceException ase) {
 
 			throw new AcmeFileAccessException("Erro ao deletar arquivo ", ase);
@@ -132,7 +131,7 @@ public class AWSService {
 			logger.info("===================== copy File - Done! =====================");
 			StringBuilder result = new StringBuilder(ARQUIVO_TEXT).append(keyFile.getOriginName())
 					.append("' copiado para '").append(keyFile.getTargetName()).append("' com SUCESSO!");
-			return new Response(result.toString(), HttpStatus.OK);
+			return new Response(result.toString());
 		} catch (AmazonServiceException ase) {
 
 			throw new AcmeFileAccessException("Erro ao Copiar arquivo ", ase);

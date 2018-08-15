@@ -23,7 +23,7 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 
 	$scope.dados = dados;
 	
-	var carregarArquivios = function(){
+	var  carregarArquivios = function(){
 		$http.get("http://localhost:8081/listdiretorios")
 		.then(function (response) {
 			
@@ -46,23 +46,26 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 	carregarArquivios();
 	
 	$scope.executarrenomeararquivo = function(){
-	
-		$http.post("http://localhost:8081/renamearquivo", dados.KeyFile)
-		.then(function (response) {
-				
+		
+		$http({
+			method: 'POST',
+			url: 'http://localhost:8081/renamearquivo',
+			headers: {'Content-Type': "application/json"},
+			data: dados.KeyFile
+			}
+		).then(function mySuccess(response) {
+	        
 			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.showrespostadeacao = true;
 			carregarArquivios();
-		}, function myError(response) {
-			
-			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+	    }, function myError(response) {
+	    	
+	    	$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.apresentarErro = true;
-		}
-		
-		
-		);
+	    });
 
 	};
+	
 	
 	$scope.executarduplicararquivo = function(){
 		
@@ -77,27 +80,27 @@ angular.module("appAcme").controller("acmecontroller", function ($scope, $http) 
 			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.apresentarErro = true;
 		}
-		
-		
 		);
 
 	};
 	
 	$scope.executardeletararquivo = function(){
-		
-		$http.delete("http://localhost:8081/deletararquivo", dados.KeyFile)
-		.then(function (response) {
-				
+		$http({
+			method: 'DELETE',
+			url: 'http://localhost:8081/deletararquivo',
+			headers: {'Content-Type': "application/json"},
+			data: dados.KeyFile
+			}
+		).then(function mySuccess(response) {
+	        
 			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.showrespostadeacao = true;
 			carregarArquivios();
-		}, function myError(response) {
-			
-			$scope.dados.mensagemrespostadeacao = response.data.mensagem;
+	    }, function myError(response) {
+	    	
+	    	$scope.dados.mensagemrespostadeacao = response.data.mensagem;
 			$scope.dados.apresentarErro = true;
-		}
-		);
-
+	    });
 	};
 	
 	$scope.executaruoloadfile = function(){
